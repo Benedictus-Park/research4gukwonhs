@@ -1,0 +1,18 @@
+CREATE DATABASE metastudy DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+USE metastudy;
+
+CREATE TABLE users(
+    uid INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    hashed_pwd TEXT NOT NULL,
+    studied_time INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE goals(
+    idx INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    uid INT NOT NULL,
+    goal TEXT NOT NULL,
+    completed BOOLEAN NOT NULL DEFAULT FALSE
+);

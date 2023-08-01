@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko-kr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MetaStudy : Login</title>
+    <link rel="stylesheet" href="css/master.css" />
+  </head>
+  <body>
+    <header>
+      <h2 class="meta-study"><a href="index.html">MetaStudy</a></h2>
+      <nav class="navigation">
+        <a id="about">About MetaStudy?</a>
+      </nav>
+    </header>
+    <div class="wrapper">
+      <div class="form-box login">
+        <h2>Login</h2>
+        <form>
+          <div class="input-box">
+            <span class="icon"><ion-icon name="mail"></ion-icon></span>
+            <input type="text" id="login_email" required />
+            <label>Email</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+            <input type="password" id="login_pwd" required />
+            <label>Password</label>
+          </div>
+          <button type="submit" class="btn" id="btnlogin">Login</button>
+          <div class="login-register">
+            <p>
+              아직 회원이 아니신가요?
+              <a href="#" class="register-link">가입하기</a>
+            </p>
+          </div>
+        </form>
+      </div>
+      <div class="form-box register">
+        <h2>Registration</h2>
+        <form action="#">
+          <div class="input-box">
+            <span class="icon"><ion-icon name="person"></ion-icon></span>
+            <input type="text" id="registration_username" required />
+            <label>사용할 이름</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><ion-icon name="mail"></ion-icon></span>
+            <input type="text" id="registration_email" required />
+            <label>Email</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+            <input type="password" id="registration_pwd" required />
+            <label>Password</label>
+          </div>
+          <div class="remember-forgot">
+            <label></label>
+          </div>
+          <button type="submit" class="btn" id="btnregistration">Register</button>
+          <div class="login-register">
+            <p>
+              이미 계정이 있으신가요?
+              <a href="#" class="login-link">로그인</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="js/indexscript_front.js"></script>
+    <script src="js/performLogin.js"></script>
+    <script src="js/performRegistration.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
