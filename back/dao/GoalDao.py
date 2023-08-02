@@ -10,16 +10,11 @@ class GoalDao:
             "goal":goal
         }
 
-        sql = "SELECT COUNT(*) FROM goals"
-        flag_success = int(self.engine.execute(sql)[0])
-
         sql = f"INSERT INTO goals(uid, goal) VALUES(:uid, :goal)"
         self.engine.execute(sql, param)
 
-        sql = "SELECT COUNT(*) FROM goals"
-        flag_success -= int(self.engine.execute(sql)[0])
-
-        return False if flag_success else True
+        sql = "SELECT COUNT(*) FROM goals WHERE uid=:uid AND goal=:goal"
+        return bool(self.engine.execute(sql, param))
 
     def complete_goal(self, idx:int, uid:int) -> bool:
         param = {
@@ -27,16 +22,11 @@ class GoalDao:
             "uid":uid
         }
 
-        sql = "SELECT COUNT(*) FROM goals WHERE idx=:idx AND uid=:uid AND completed=TRUE"
-        flag_success = int(self.engine.execute(sql, param)[0])
-
         sql = "UPDATE goals SET completed=TRUE WHERE idx=:idx AND uid=:uid"
         self.engine.execute(self.engine.execute(sql, param))
 
         sql = "SELECT COUNT(*) FROM goals WHERE idx=:idx AND uid=:uid AND completed=TRUE"
-        flag_success -= int(self.engine.execute(sql, param)[0])
-
-        return False if flag_success else True
+        return bool(self.engine.execute(sql, param))
 
     def get_goals(self, uid:int) -> tuple:
         result = []

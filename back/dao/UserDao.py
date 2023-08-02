@@ -1,8 +1,74 @@
 from sqlalchemy.engine import Engine
 
 class UserDao:
-     def __init__(self, engine:Engine):
+    def __init__(self, engine:Engine):
         self.engine = engine
 
-    # 유저 삽입, 유저 인출, 공부시간 업데이트 기능 필요. 유저 삽입 시 중복이메일/유저네임 거르기.
-    # 유저 삽입 성공 여부는 삽입 후 유저 조회가 되는지 여부로 확인. 조회 안 되면 None이 튀어나옴.
+    def insert_user(self, username:str, email:str, hashed_pwd:str) -> int:
+        # CODE 1 -> 성공
+        # CODE 2 -> 중복 유저명
+        # CODE 3 -> 중복 이메일
+        # CODE 4 -> Error, unspecified
+
+        param = {
+            "username":username,
+            "email":email,
+            "hashed_pwd":hashed_pwd,
+        }
+
+        sql = "SELECT COUNT(*) FROM users WHERE username=:username"
+        if int(self.engine.execute(sql, param)[0]):
+            return 2
+        
+        sql = "SELECT COUNT(*) FROM users WHERE email=:email"
+        if int(self.engine.execute(sql, param)[0]):
+            return 3
+        
+        sql = "INSERT INTO users(username, email, hashed_pwd) VALUES(:username, :email, :hashed_pwd)"
+        self.engine.execute(sql, param)
+
+        sql = "SELECT COUNT(*) FROM users WHERE username=:username AND email=:email"
+        if int(self.engine.execute(sql, param)[0]):
+            return 4
+        
+        return 1
+
+    def get_user(self, email:str) -> dict:
+        param = {
+            "email":email
+        }
+
+        sql = "SELECT uid, username, hashed_pwd, studied_time FROM users WHERE email=:email"
+        record = self.engine.execute(sql, param)
+
+        return {
+            "uid":record['uid'],
+            "username":record['username'],
+            "hashed_pwd":record['hashed_pwd'],
+            "studied_time":record['studied_time']
+        } if record else None
+
+    def get_studiedtime(self, uid:int) -> int:
+        param = {
+            "uid":uid,
+        }
+
+        sql = "SELECT studied_time FROM users WHERE uid=:uid"
+        studied_time = self.engine.execute(sql, param)
+
+        return studied_time[0] if studied_time else -1
+    
+    def add_studiedtime(self, uid:int, secs:int) -> bool:
+        studied_time = self.get_studiedtime(uid)
+        param = {
+            "uid":uid,
+            "studied_time":studied_time + secs
+        }
+
+        if param["studied_time"] == -1:
+            return False
+        
+        sql = "UPDATE users SET studied_time=:studied_time WHERE uid=:uid"
+        self.engine.execute(sql, param)
+
+        return True
