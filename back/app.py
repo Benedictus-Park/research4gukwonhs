@@ -7,14 +7,12 @@ from dao.UserDao import UserDao
 from services.GoalService import GoalService
 from services.UserService import UserService
 
+from config import *
+
 class Services:
     pass
 
-DB_ID = "root"
-DB_PWD = "0000"
-DB_HOST = "localhost"
-DB_PORT = 3306
-DB_NAME = "metastudy"
+# Login-Req 만들기
 
 DB_URL = f"mysql+pymysql://{DB_ID}:{DB_PWD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
@@ -31,7 +29,7 @@ userdao = UserDao(engine)
 # Business Layer
 services = Services()
 services.goal = GoalService(goaldao)
-services.user = UserService(userdao)
+services.user = UserService(userdao, JWT_SECRET_KEY)
 
 @app.route("/login", methods=["POST"])
 def login():

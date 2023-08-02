@@ -1,5 +1,10 @@
 from sqlalchemy.engine import Engine
 
+INSERT_SUCCESS = 1
+INSERT_DUPLICATE_UNAME = 2
+INSERT_DUPLICATE_EMAIL = 3
+INSERT_UNSPECIFIED_ERR = 4
+
 class UserDao:
     def __init__(self, engine:Engine):
         self.engine = engine
@@ -18,20 +23,20 @@ class UserDao:
 
         sql = "SELECT COUNT(*) FROM users WHERE username=:username"
         if int(self.engine.execute(sql, param)[0]):
-            return 2
+            return INSERT_DUPLICATE_UNAME
         
         sql = "SELECT COUNT(*) FROM users WHERE email=:email"
         if int(self.engine.execute(sql, param)[0]):
-            return 3
+            return INSERT_DUPLICATE_EMAIL
         
         sql = "INSERT INTO users(username, email, hashed_pwd) VALUES(:username, :email, :hashed_pwd)"
         self.engine.execute(sql, param)
 
         sql = "SELECT COUNT(*) FROM users WHERE username=:username AND email=:email"
         if int(self.engine.execute(sql, param)[0]):
-            return 4
+            return INSERT_UNSPECIFIED_ERR
         
-        return 1
+        return INSERT_SUCCESS
 
     def get_user(self, email:str) -> dict:
         param = {
@@ -50,7 +55,7 @@ class UserDao:
 
     def get_studiedtime(self, uid:int) -> int:
         param = {
-            "uid":uid,
+            "uid":uid
         }
 
         sql = "SELECT studied_time FROM users WHERE uid=:uid"
