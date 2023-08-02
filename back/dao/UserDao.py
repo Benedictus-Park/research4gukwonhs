@@ -1,7 +1,7 @@
 from sqlalchemy.engine import Engine
 
 class UserDao:
-    def __init__(self, engine:Engine):
+     def __init__(self, engine:Engine):
         self.engine = engine
 
     # 유저 삽입, 유저 인출, 공부시간 업데이트 기능 필요. 유저 삽입 시 중복이메일/유저네임 거르기.
