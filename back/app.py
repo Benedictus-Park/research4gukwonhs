@@ -87,3 +87,5 @@ def add_goal():
 def goal_complete():
     idx = request.get_json()['idx']
     return goal_service.goal_completion_feat_han_river(idx, g.uid)
+
+app.run(host="127.0.0.1", port=4444, debug=True)

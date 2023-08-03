@@ -1,4 +1,6 @@
-const btnRegistration = document.getElementById("btnregistration");
+var btnRegistration = document.getElementById("btnregistration");
+
+btnRegistration.addEventListener('click', performRegistration);
 
 function performRegistration(){
     var username = String(document.getElementById("registration_username").value);
@@ -23,19 +25,16 @@ function performRegistration(){
         return;
     }
 
-    fetch("localhost:4444/register", {
+    fetch("http://localhost:4444/registration", {
         method:"POST",
         headers:{
             "Content-Type":"application/json"
         },
         body: JSON.stringify(regJSO)
     }).then((rawrsp) => {
+        rawrsp.text().then((s) => alert(s));
         if(rawrsp.ok){
-            alert("가입 성공! 로그인 화면으로 이동합니다.");
             location.reload();
-        }
-        else{
-            alert(rawrsp.statusText);
         }
     });
 }

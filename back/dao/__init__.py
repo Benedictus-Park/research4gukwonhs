@@ -1,4 +1,4 @@
 from .GoalDao import GoalDao
-from .UserDao import UserDao, INSERT_SUCCESS, INSERT_DUPLICATE_EMAIL, INSERT_DUPLICATE_UNAME, INSERT_UNSPECIFIED_ERR
+from .UserDao import UserDao
 
-__all__ = ['GoalDao', 'UserDao', 'INSERT_SUCCESS', 'INSERT_DUPLICATE_EMAIL', 'INSERT_DUPLICATE_UNAME', 'INSERT_UNSPECIFIED_ERR']
+__all__ = ['GoalDao', 'UserDao']

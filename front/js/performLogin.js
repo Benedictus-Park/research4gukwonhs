@@ -4,10 +4,9 @@ function performLogin(){
     var email = String(document.getElementById("login_email").value);
     var password = String(document.getElementById("login_pwd").value);
     var loginJSO = {
-        "id":email,
+        "email":email,
         "pwd":password
     };
-    var rsp;
 
     if(email.indexOf('@') == -1 || email.indexOf('.') == -1 || email.length < 3){
         alert("이메일 형식이 잘못되었습니다.");
@@ -18,7 +17,7 @@ function performLogin(){
         return;
     }
 
-    rsp = fetch("localhost:4444/login", {
+    fetch("http://localhost:4444/login", {
         method:"POST",
         headers:{
             "Content-Type":"application/json"
@@ -29,16 +28,19 @@ function performLogin(){
             return rawrsp.json();
         }
         else{
-            alert(rawrsp.statusText);
+            rawrsp.text().then((s) => alert(s));
             return null;
         }
-    });
-
-    if(rsp != null){
+    }).then((rsp) => {
+        if(rsp == null){
+            return;
+        }
+        
+        alert("로그인 성공!");
         sessionStorage.setItem("UserName", rsp["uname"]);
         sessionStorage.setItem("Access-Token", rsp["token"]);
-        location.href = "localhost/main.html";
-    }
+        location.href = "main.html";
+    });
 }
 
 btnLogin.addEventListener("click", performLogin);

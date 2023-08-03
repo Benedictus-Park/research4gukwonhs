@@ -1,3 +1,4 @@
+from sqlalchemy.sql import text
 from sqlalchemy.engine import Engine
 
 class GoalDao:
@@ -11,10 +12,10 @@ class GoalDao:
         }
 
         sql = f"INSERT INTO goals(uid, goal) VALUES(:uid, :goal)"
-        self.engine.execute(sql, param)
+        self.engine.execute(text(sql), param)
 
         sql = "SELECT COUNT(*) FROM goals WHERE uid=:uid AND goal=:goal"
-        return bool(self.engine.execute(sql, param))
+        return bool(self.engine.execute(text(sql), param))
 
     def complete_goal(self, idx:int, uid:int) -> bool:
         param = {
@@ -23,16 +24,16 @@ class GoalDao:
         }
 
         sql = "UPDATE goals SET completed=TRUE WHERE idx=:idx AND uid=:uid"
-        self.engine.execute(self.engine.execute(sql, param))
+        self.engine.execute(text(sql), param)
 
         sql = "SELECT COUNT(*) FROM goals WHERE idx=:idx AND uid=:uid AND completed=TRUE"
-        return bool(self.engine.execute(sql, param))
+        return bool(self.engine.execute(text(sql), param))
 
     def get_goals(self, uid:int) -> dict:
         result = []
 
         sql = f"SELECT idx, goal, completed FROM goals WHERE uid={uid}"
-        records = self.engine.execute(sql)
+        records = self.engine.execute(text(sql))
 
         for row in records:
             result.append({

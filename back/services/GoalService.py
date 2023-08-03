@@ -1,8 +1,7 @@
 from flask import Response, jsonify
-from ..dao.GoalDao import GoalDao
 
 class GoalService:
-    def __init__(self, dao:GoalDao):
+    def __init__(self, dao):
         self.dao = dao
 
     def add_goal_service(self, uid:int, goal:str) -> Response:
