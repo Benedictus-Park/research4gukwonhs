@@ -9,16 +9,6 @@ class UserService:
     def __init__(self, dao:UserDao, JWT_SECRET_KEY:str):
         self.dao = dao
         self.JWT_SECRET_KEY = JWT_SECRET_KEY
-
-    def check_token(self, token:str) -> int:
-        uid = None
-
-        try:
-            uid = int(jwt.decode(token, self.JWT_SECRET_KEY, 'HS256')['uid'])
-        except jwt.InvalidTokenError:
-            return -1
-        
-        return uid
     
     def registration_service(self, username:str, email:str, pwd:str) -> Response:
         hashed_pwd = bcrypt.hashpw(pwd.encode(), bcrypt.gensalt()).decode('utf-8')
@@ -44,10 +34,19 @@ class UserService:
         
         access_token = jwt.encode({
             'uid':user['uid']
-        }, self.JWT_SECRET_KEY, 'HS256', )
+        }, self.JWT_SECRET_KEY, 'HS256')
 
         return jsonify({
             'exp':datetime.datetime.utcnow() + datetime.timedelta(days=1),
             'uname':user['username'],
             'token':access_token
         })
+    
+    def studied_time_service_add(self, uid:int, secs:int) -> Response:
+        if self.dao.add_studiedtime(uid, secs):
+            return Response(status=200)
+        else:
+            return Response(status=500)
+        
+    def studied_time_service_get(self, uid:int) -> int:
+        return self.dao.get_studiedtime(uid)

@@ -28,7 +28,7 @@ class GoalDao:
         sql = "SELECT COUNT(*) FROM goals WHERE idx=:idx AND uid=:uid AND completed=TRUE"
         return bool(self.engine.execute(sql, param))
 
-    def get_goals(self, uid:int) -> tuple:
+    def get_goals(self, uid:int) -> dict:
         result = []
 
         sql = f"SELECT idx, goal, completed FROM goals WHERE uid={uid}"
@@ -41,4 +41,7 @@ class GoalDao:
                 "completed":row['completed']
             })
         
-        return tuple(result)
+        return {
+            "count":len(result),
+            "records":result
+        }
